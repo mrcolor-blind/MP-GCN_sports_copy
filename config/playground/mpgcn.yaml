@@ -1,0 +1,57 @@
+# ==========================================
+# Playground Dataset — MP-GCN Configuration
+# ==========================================
+
+# Setting
+gpus: [0]
+seed: 1
+debug: False
+pretrained_path:
+work_dir: ./workdir
+
+# Data Loader
+dataset: playground
+dataset_args:
+  graph: playground-6             # 24 nodos * 6 personas
+  labeling: intra-inter
+  inter_link: pairwise
+  hop: 1
+  dilation: 2
+  train_batch_size: 1
+  eval_batch_size: 1
+  num_frame: 50
+  inputs: JV                       # joint + velocity
+  part: person
+  transform: True
+  ball: False
+  net: False
+  root_folder: ./data/playground
+  person_id: [0,1,2,3,4,5]
+
+# Model
+model_type: MPGCN
+model_args:
+  use_att: True
+  kernel_size: [3,2]
+  dilation: [2,3]
+  reduct_ratio: 1
+
+# Optimizer
+optimizer: SGD
+optimizer_args:
+  SGD:
+    lr: 0.1
+    momentum: 0.9
+    nesterov: True
+    weight_decay: 0.0002
+  Adam:
+    lr: 0.001
+    betas: [0.9, 0.99]
+    weight_decay: 0.0002
+
+# Scheduler
+lr_scheduler: cosine
+scheduler_args:
+  cosine:
+    max_epoch: 50
+    warm_up: 5

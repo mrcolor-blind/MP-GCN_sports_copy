@@ -18,7 +18,8 @@ class Processor(Initializer):
         train_iter = tqdm(self.train_loader, dynamic_ncols=True)
         for num, (x, y, _) in enumerate(train_iter):
             self.optimizer.zero_grad()
-
+            print(x.shape)
+            print(y.shape)
             # Using GPU
             x = x.float().to(self.device)
             y = y.long().to(self.device)
@@ -141,7 +142,7 @@ class Processor(Initializer):
             checkpoint = utils.load_checkpoint(
                 self.args.work_dir, self.model_name)
             if checkpoint:
-                self.model.module.load_state_dict(checkpoint['model'])
+                self.model.module.load_state_dict(checkpoint['model'], strict=False)
             logging.info('Successful!')
             logging.info('')
 

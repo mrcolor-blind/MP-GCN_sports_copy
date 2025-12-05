@@ -6,11 +6,14 @@ from .nba_feeder import NBA_Feeder
 from .volleyball_individual_feeder import Volleyball_Individual_Feeder
 from .kinetics_feeder import K400_HRNet_Feeder
 
+from .playground_feeder import Playground_Feeder # NUEVO
+
 __data_args = {
     'volleyball': {'class': 8, 'feeder': Volleyball_Feeder},
     'volleyball_individual': {'class': 10, 'feeder': Volleyball_Individual_Feeder},
     'nba': {'class': 9, 'feeder': NBA_Feeder},
-    'kinetics': {'class': 400, 'feeder': K400_HRNet_Feeder}
+    'kinetics': {'class': 400, 'feeder': K400_HRNet_Feeder},
+    'playground': {'class': 2, 'feeder': Playground_Feeder},  # NUEVO
 }
 
 

@@ -4,12 +4,14 @@ from .volleyball_reader import VolleyBall_Reader
 from .volleyball_weak_reader import VolleyBall_Weak_Reader
 from .nba_reader import NBA_Reader
 from .k400_reader import K400_HRNet_Reader
+from .playground_reader import Playground_Reader
 
 __generator = {
     'volleyball': VolleyBall_Reader,
     'volleyball-weak': VolleyBall_Weak_Reader,
     'nba': NBA_Reader,
-    'kinetics': K400_HRNet_Reader
+    'kinetics': K400_HRNet_Reader,
+    'playground': Playground_Reader,
 }
 
 

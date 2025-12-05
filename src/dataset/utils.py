@@ -4,7 +4,9 @@ import logging
 def graph_processing(data, graph, processing):
     C, T, V, M = data.shape
     num_person = 1 if len(graph.split('-')) == 1 else int(graph.split('-')[1])
-    
+    #print("Num person: " + str(num_person))
+    #print(f"DATA SHAPE: {data.shape}")
+
     if num_person > 1:
         if processing == 'default':
             multi_person_data = np.zeros([C, T, V*M, 1])
@@ -19,7 +21,10 @@ def graph_processing(data, graph, processing):
             logging.info('')
             logging.error('Error: Wrong in loading processing configs')
             raise ValueError()
+        
+        #print("multi person data: ")
         return multi_person_data
+    #print("data: ")
     return data
 
 def multi_input(data, conn, inputs, centers):
@@ -37,8 +42,16 @@ def multi_input(data, conn, inputs, centers):
         joint_motion[:C, i, :, :] = data[:, i+1, :, :] - data[:, i, :, :]
         joint_motion[C:, i, :, :] = data[:, i+2, :, :] - data[:, i, :, :]
     for i in range(len(conn)):
+        
         if conn[i] >= 0:
-            bone[:C, :, i, :] = data[:, :, i, :] - data[:, :, conn[i], :]
+            try:
+                #print("Conn[i]: " + str(conn[i]))
+                #print("i: " + str(i))
+                bone[:C, :, i, :] = data[:, :, i, :] - data[:, :, conn[i], :]
+            except:
+                # print("Conn[i]: " + str(conn[i]))
+                # print("i: " + str(i))
+                bone[:C, :, i, :] = data[:, :, i, :] - data[:, :, conn[i], :]
     for i in range(T-2):
         bone_motion[:C, i, :, :] = bone[:C, i+1, :, :] - bone[:C, i, :, :]
         bone_motion[C:, i, :, :] = bone[:C, i+2, :, :] - bone[:C, i, :, :]

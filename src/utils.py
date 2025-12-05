@@ -6,6 +6,7 @@ import logging
 import json
 import torch
 from time import time, strftime, localtime
+import numpy as np
 
 
 def import_class(name):
@@ -36,7 +37,8 @@ def load_checkpoint(work_dir, model_name):
     else:
         file_name = '{}/{}.pth.tar'.format(work_dir, model_name)
     try:
-        checkpoint = torch.load(file_name, map_location=torch.device('cpu'))
+        torch.serialization.add_safe_globals([np.core.multiarray.scalar])
+        checkpoint = torch.load(file_name, map_location=torch.device('cpu'), weights_only=False)
     except:
         logging.info('')
         logging.error(

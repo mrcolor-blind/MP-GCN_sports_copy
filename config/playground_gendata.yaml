@@ -1,0 +1,31 @@
+# ==========================================
+# Playground Dataset — Data Generation Config
+# ==========================================
+
+# Reproducibilidad y entorno
+seed: 1
+debug: False
+work_dir: ./workdir
+
+# Dataset
+dataset: playground
+dataset_args:
+  # Ruta raíz del dataset crudo (con carpetas yolo_outputs/, annotations.pkl, objects.yaml)
+  dataset_root_folder: ./data/raw/playground_dataset
+
+  # Ruta donde se guardarán los .npy y .pkl procesados
+  out_folder: ./data/playground
+
+
+  # Parámetros opcionales (coinciden con tu Playground_Reader)
+  # class2idx:  # mapeo explícito de tus 6 clases
+  #   Transit: 0
+  #   Social_People: 1
+  #   Play_Object_Normal: 2
+  #   Play_Object_Risk: 3
+  #   Adult_Assisting: 4
+  #   Negative_Contact: 5
+
+  class2idx:  # mapeo explícito de tus 6 clases
+    Transit: 0
+    Social: 1
