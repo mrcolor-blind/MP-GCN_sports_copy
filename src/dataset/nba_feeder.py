@@ -76,10 +76,12 @@ class NBA_Feeder(Dataset):
             object_data = np.expand_dims(object_data, axis=-1)
             object_data = np.tile(object_data, (1, 1, 1, M))
             pose_data = np.concatenate((pose_data, object_data), axis=2)
+        #print("NBA DATA SHAPE PRE GRAPH PROCESSING" + str(pose_data.shape))
         data = graph_processing(pose_data, self.graph, self.processing)
         # (C, T, V, M) -> (I, C*2, T, V, M)
+        #print("NBA DATA SHAPE PRE MULTI INPUT" + str(data.shape))
         data_new = multi_input(data, self.conn, self.inputs, self.center)
-
+        #print("NBA DATA SHAPE POST MULTI INPUT" + str(data_new.shape))
         try:
             assert list(data_new.shape) == self.datashape
         except AssertionError:

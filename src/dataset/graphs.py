@@ -35,6 +35,7 @@ class Graph():
         num_person = 1 if len(graph) == 1 else int(graph[1])
         
         if graph_base == 'coco':
+            print("COCO")
             num_node = 17
             neighbor_link = [(15, 13), (13, 11), (16, 14), (14, 12), (11, 5), (12, 6),
                                 (9, 7), (7, 5), (10, 8), (8, 6), (5, 0), (6, 0),
@@ -50,6 +51,7 @@ class Graph():
                 np.array([0, 1, 2, 3, 4])  # head
             ]
         elif graph_base == 'coco_ball' or graph_base == 'coco_net':
+            print("COCO BALL O COCO NET")
             num_node = 17 + 1
             neighbor_link = [(15, 13), (13, 11), (16, 14), (14, 12), (11, 5), (12, 6),
                                 (9, 7), (7, 5), (10, 8), (8, 6), (5, 0), (6, 0),
@@ -72,6 +74,7 @@ class Graph():
                     np.array([num_node-1]) # object
                 ]
         elif graph_base == 'coco_ball_net':
+            print("COCO BALL NET")
             num_node = 17 + 2
             neighbor_link = [(15, 13), (13, 11), (16, 14), (14, 12), (11, 5), (12, 6),
                                 (9, 7), (7, 5), (10, 8), (8, 6), (5, 0), (6, 0),
@@ -96,6 +99,7 @@ class Graph():
                     np.array([num_node-1])
                 ]
         elif graph_base == 'openpose':
+            print("OPENPOSE")
             num_node = 25
             neighbor_link = [(0, 1), (0, 15), (0, 16), (15, 17), (16, 18),
                                 (1, 2), (2, 3), (3, 4), (1, 5), (5, 6), (6, 7),
@@ -115,8 +119,47 @@ class Graph():
             ]
             center = 1
         
+        elif graph_base == 'playground': #NUEVO
+            print("PLAYGROUND GRAPH")
+            # 17 joints + 7 objetos fijos por cámara
+            num_node = 24
+            # Estructura base tipo COCO + enlaces ficticios a objetos
+            neighbor_link = [
+                (15, 13), (13, 11), (16, 14), (14, 12), (11, 5), (12, 6),
+                (9, 7), (7, 5), (10, 8), (8, 6), (5, 0), (6, 0),
+                (1, 0), (3, 1), (2, 0), (4, 2)
+            ]
+            # Conectar cada objeto con el torso (nodo 0)
+            for obj in range(17, 24):
+                neighbor_link.append((0, obj))
+
+            center = [0] * num_node
+
+            connect_joint = np.array(
+                [0, 0, 0, 1, 2, 0, 0, 5, 6, 7, 8, 0, 0, 11, 12, 13, 14,
+                 0, 0, 0, 0, 0, 0, 0])  # objetos conectan al torso
+
+            if self.part == 'body':
+                parts = [
+                    np.array([5, 7, 9]),        # left_arm
+                    np.array([6, 8, 10]),       # right_arm
+                    np.array([11, 13, 15]),     # left_leg
+                    np.array([12, 14, 16]),     # right_leg
+                    np.array([0, 1, 2, 3, 4]),  # head/torso
+                    np.arange(17, 24)           # objetos
+                ]
+            elif self.part == 'person':
+                parts = [
+                    np.arange(17),  # cuerpo humano
+                    np.arange(17, 24)  # objetos
+                ]
+
+
+
         # producing multi-person graph 
         if num_person > 1:
+            print(center)
+            print(num_person)
             center = []
             neighbor_link_intra_nperson = []
             neighbor_link_inter_nperson = []
